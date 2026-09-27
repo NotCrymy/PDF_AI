@@ -1,0 +1,9 @@
+{
+    "path": "Compte_rendu_reunion_Maki2.pdf",
+    "pages": [
+        {
+            "page": 1,
+            "text": "Compte rendu de réunion  Équipe Maki        Date  24/09/2026  Client  Kapture - M. Mas  Participants  M. Mas (Kapture), Équipe Maki  Rédigé par  Équipe Maki  Objet  Présentation de la proposition technique et commerciale  1. Contexte  Présentation de notre solution KAPTURE FAIRPLAY Analytics et de notre proposition technique et  commerciale.  2. Solution présentée  •​ Solution : passerelle neutre collectant données de jeu et signalements de bugs sans modifier le  code des jeux, avec pseudonymisation RGPD  •​ Architecture : une instance autonome par site de test , données nominatives conservées sur site  •​ Stack : Java / Spring Boot, MariaDB, Vue.js, REST / JSON  •​ Chiffrage : POC de 3 mois, 32 000 € HT (Essentielle) ou 35 000 € HT (Complète)  •​ Organisation : Agile, sprints de deux semaines  •​ Maquettes : vue publique (classement des joueurs) et vue administrateur (supervision)  3. Corrections  Sujet  Proposition initiale  Validé en réunion  Interface de  signalement de  bugs  Spécification et maquette de  référence, implémentation en jeu à  la charge de Kapture  Son intégration fait partie de notre  périmètre  4. Prochaine réunion  Prévue en semaine 42 (du 12 au 16 octobre 2026) avec M. Mas, en visioconférence ou par téléphone."
+        }
+    ]
+}
