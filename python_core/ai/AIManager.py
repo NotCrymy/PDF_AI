@@ -37,7 +37,6 @@ class AIManager:
             Tu es un assistant spécialisé dans l'analyse de documents PDF.
 
             Voici les documents disponibles :
-
             {context}
 
             Question :
@@ -47,6 +46,7 @@ class AIManager:
             Si l'information n'est pas présente dans les documents, réponds "Je ne sais pas".
             Lorsque tu utilises une information, indique le document et la page correspondante.
             Si des documents ne te semblent pas partinents pour répondre à la question, ignore-les simplement, tu n'es pas obligé de les mentionner ni de les utiliser.
+            Tu peux répondre naturellement quand il ne s'agit pas d'une question lié aux documents.
         """
 
         response = chat(

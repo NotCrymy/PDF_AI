@@ -18,10 +18,8 @@ class DocumentLoader:
         documents = []
 
         if not self.directory.exists() or not self.directory.is_dir():
-            raise ValueError(f"The directory {self.directory} does not exist or is not a directory.")
-
-        if not any(self.directory.glob("*.json")):
-            raise ValueError(f"No JSON files found in the directory {self.directory}.")
+            self.directory.mkdir(parents=True, exist_ok=True)
+            print(f"Directory {self.directory} created.")
 
         for file_path in self.directory.glob("*.json"):
             with open(file_path, "r", encoding="utf-8") as f:
