@@ -1,4 +1,6 @@
 class PdfDocument:
+    """A class to represent a PDF document with its path and pages."""
+    
     def __init__(self, path : str):
         """Initializes the PdfDocument with a file path and an empty list of pages."""
         self.name = path.split('/')[-1].split('.')[0]  # Extracts the file name without extension

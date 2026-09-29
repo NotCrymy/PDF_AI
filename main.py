@@ -2,7 +2,11 @@ import python_core.pdf.PdfList as PdfList
 import python_core.pdf.PdfDocument as PdfDocument
 import python_core.pdf.PdfManager as PdfManager
 
+import python_core.ai.AIManager as AIManager
+
 if __name__ == "__main__":
+    model = "lfm2.5-local"  # Specify the model you want to use
+
     pdf_list = ["./pdf_files/Compte_rendu_reunion_Maki.pdf", "./pdf_files/Compte_rendu_reunion_Maki2.pdf", "./pdf_files/diapo1.pdf"]
     pdf_lst = PdfList.PdfList(pdf_list)
 
@@ -17,3 +21,7 @@ if __name__ == "__main__":
             print(f"Page {page['page']}: {page['text'][:100]}...") 
 
     print(pdf_manager.get_page(lst_documents[2], 1))
+
+    ai = AIManager.AIManager(model = model)
+    response = ai.ask("Quel est le sujet de la réunion ?")
+    print("AI Response:", response)

@@ -61,7 +61,7 @@ class PdfManager:
         with open(f"./{output_path}/{pdf_document.name}.json", "w", encoding="utf-8") as f:
             json.dump(json_data, f, ensure_ascii=False, indent=4)
 
-    def to_json_all(self, pdf_documents : list, output_path : str):
+    def to_json_all(self, pdf_documents : list[PdfDocument.PdfDocument], output_path : str):
         """
         Converts a list of PdfDocument objects to JSON files in the specified output path.
         
