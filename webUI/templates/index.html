@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF AI APP</title>
+</head>
+<body>
+    <div id="DocumentContainer">
+        <h1>Documents</h1>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" name="pdf_files" multiple>
+            <button type="submit">Upload PDFs</button>
+        </form>
+    </div>
+
+    <div id="ConversationContainer">
+        <h1>Conversation</h1>
+        <div id="conversation">
+            <div id="QuestionContainer">
+                <form id="question-form">
+                    <input type="text" id="question-input" placeholder="Ask a question..." required>
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+            <div id="response">
+                <p id="response-text"></p>
+            </div>
+        </div>
+    </div>
+
+    <div id="SettingsContainer">
+        <h1>Settings</h1>
+        <form id="settings-form">
+            <label for="model">Model:</label>
+            <select id="model" name="model">
+                <option value="lfm2.5-local">lfm2.5-local</option>
+                <option value="other-model">Other Model</option>
+            </select>
+            <button type="submit">Save Settings</button>
+        </form>
+    </div>
+</body> 
+</html>
