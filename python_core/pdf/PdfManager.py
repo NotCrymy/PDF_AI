@@ -1,8 +1,8 @@
 import pymupdf
 import json
 
-import pdf.PdfDocument as PdfDocument
-import pdf.PdfList as PdfList
+from . import PdfList
+from . import PdfDocument
 
 class PdfManager:
 
@@ -57,7 +57,6 @@ class PdfManager:
             "path": pdf_document.path,
             "pages": pdf_document.pages
         }
-        
 
         with open(f"./{output_path}/{pdf_document.name}.json", "w", encoding="utf-8") as f:
             json.dump(json_data, f, ensure_ascii=False, indent=4)
@@ -72,3 +71,16 @@ class PdfManager:
         """
         for pdf_document in pdf_documents:
             self.to_json(pdf_document, output_path)
+
+    def get_page(self, pdf_document : PdfDocument.PdfDocument, page_number : int):
+        """
+        Retrieves the text content of a specific page from a PdfDocument.
+        
+        Args:
+            pdf_document (PdfDocument): An instance of PdfDocument to retrieve the page from.
+            page_number (int): The page number to retrieve (1-based index).
+
+        Returns:
+            str: The text content of the specified page.
+        """
+        return pdf_document.pages[page_number - 1]["text"] if 0 < page_number <= len(pdf_document.pages) else None

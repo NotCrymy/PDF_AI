@@ -1,5 +1,5 @@
 {
-    "path": "diapo1.pdf",
+    "path": "./pdf_files/diapo1.pdf",
     "pages": [
         {
             "page": 1,

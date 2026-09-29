@@ -7,4 +7,3 @@ class PdfList:
             pdf_list (list): A list of PDF file paths.
         """
         self.list = pdf_list
-
