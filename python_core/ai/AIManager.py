@@ -7,14 +7,28 @@ class AIManager:
     def __init__(
         self,
         model: str = "lfm2.5-local",
-        document_context_path: str = "./python_core/parsed_doc/"
+        document_context_path: str = "./python_core/parsed_doc/",
+        all_models: list[str] | None = None
     ):
-        self.model = model
-        self.document_loader = DocumentLoader(document_context_path)
+        self.current_model = model
+        self.all_models = all_models if all_models is not None else []
 
+        if model not in self.all_models:
+            self.all_models.append(model)
+
+        self.document_loader = DocumentLoader(document_context_path)
         self.documents = self.document_loader.load_all()
 
+    def set_model(self, model: str):
+        self.current_model = model
+
+    def add_model(self, model: str):
+        if model not in self.all_models:
+            self.all_models.append(model)
+
     def build_context(self) -> str:
+        self.documents = self.document_loader.load_all()
+
         context = ""
 
         for document in self.documents:
@@ -30,7 +44,6 @@ class AIManager:
         return context
 
     def ask(self, question: str) -> str:
-
         context = self.build_context()
 
         prompt = f"""
@@ -38,8 +51,6 @@ class AIManager:
             Réponds à partir des informations présentes dans les documents.
             Si l'information n'est pas présente dans les documents, tu peux répondre "Je ne sais pas".
             Lorsque tu utilises une information, indique le document et la page correspondante.
-            Si des certains documents ne te semblent pas partinents pour répondre à la question, ignore-les simplement, tu n'es pas obligé de les mentionner ni de les utiliser.
-            Tu peux répondre naturellement quand il ne s'agit pas d'une question lié aux documents.
 
             Voici les documents disponibles :
             {context}
@@ -49,7 +60,7 @@ class AIManager:
         """
 
         response = chat(
-            model=self.model,
+            model=self.current_model,
             messages=[
                 {
                     "role": "user",

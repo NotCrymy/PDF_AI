@@ -1,46 +1,125 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/style.css">
-    <title>PDF AI APP</title>
+
+<link rel="stylesheet" href="/static/css/style.css">
+
+<title>PDF AI APP</title>
+
 </head>
+
 <body>
-    <div id="DocumentContainer">
+
+<!-- documents area -->
+<div id="DocumentContainer" class="sidebar">
+
+    <div class="section-header">
         <h1>Documents</h1>
-        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-            <input type="file" name="pdf_files" multiple>
-            <button type="submit">Upload PDFs</button>
-        </form>
     </div>
 
-    <div id="ConversationContainer">
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+
+        <input
+            type="file"
+            id="pdf-files"
+            name="pdf_files"
+            accept=".pdf"
+            multiple
+            hidden
+        >
+
+        <label for="pdf-files" class="file-picker">
+            <span class="file-picker-icon">+</span>
+            <span>Select PDFs</span>
+        </label>
+
+    </form>
+
+    <div id="document-list">
+        <!-- will be added dynamically -->
+    </div>
+
+</div>
+
+
+<!-- conversation area -->
+<div id="ConversationContainer">
+
+    <div class="section-header">
         <h1>Conversation</h1>
-        <div id="conversation">
-            <div id="QuestionContainer">
-                <form id="question-form">
-                    <input type="text" id="question-input" placeholder="Ask a question..." required>
-                    <button type="submit">Send</button>
-                </form>
-            </div>
-            <div id="response">
-                <p id="response-text"></p>
-            </div>
-        </div>
     </div>
 
-    <div id="SettingsContainer">
-        <h1>Settings</h1>
-        <form id="settings-form">
-            <label for="model">Model:</label>
-            <select id="model" name="model">
-                <option value="lfm2.5-local">lfm2.5-local</option>
-                <option value="other-model">Other Model</option>
-            </select>
-            <button type="submit">Save Settings</button>
-        </form>
+    <div id="conversation">
+
+        <div id="response">
+            <p id="response-text"></p>
+        </div>
+
+        <div id="QuestionContainer">
+
+            <form id="question-form">
+
+                <input
+                    type="text"
+                    id="question-input"
+                    placeholder="Ask a question..."
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit" class="primary-button">
+                    Send
+                </button>
+
+            </form>
+
+        </div>
+
     </div>
-    <script src="/static/js/script.js"></script>
-</body> 
+
+</div>
+
+
+<!-- settings area  -->
+<div id="SettingsContainer" class="sidebar">
+
+    <div class="section-header">
+        <h1>Settings</h1>
+    </div>
+
+    <form id="settings-form">
+
+        <div class="setting">
+
+            <label for="model">
+                Model
+            </label>
+
+            <select id="model" name="model">
+                <option value="lfm2.5-local">
+                    lfm2.5-local
+                </option>
+
+                <option value="other-model">
+                    Other Model
+                </option>
+            </select>
+
+        </div>
+
+        <button type="submit" class="primary-button">
+            Save Settings
+        </button>
+
+    </form>
+
+</div>
+
+
+<script src="/static/js/script.js"></script>
+</body>
 </html>
