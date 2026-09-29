@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
@@ -34,3 +34,10 @@ def chat(request: ChatRequest):
     return {
         "response": response
     }
+
+@app.post("/upload")
+async def upload(pdf_files: list[UploadFile] = File(...)):
+    for pdf_file in pdf_files:
+        file_location = f"pdf_files/{pdf_file.filename}"
+        with open(file_location, "wb") as f:
+            f.write(await pdf_file.read())
