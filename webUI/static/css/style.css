@@ -34,7 +34,7 @@ h1 {
     margin: 0;
 
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 60;
 }
 
 button,
@@ -181,7 +181,7 @@ button {
     color: #aaa;
 
     font-size: 10px;
-    font-weight: 700;
+    font-weight: 60;
 }
 
 .document-info {
@@ -194,7 +194,7 @@ button {
     color: #ddd;
 
     font-size: 13px;
-    font-weight: 500;
+    font-weight: 60;
 
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -281,6 +281,42 @@ button {
     background: #292929;
 }
 
+.document-actions {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 1px solid #303030;
+}
+
+.danger-button {
+    width: 100%;
+    min-height: 38px;
+
+    padding: 8px 12px;
+
+    border: 1px solid #3f3f3f;
+    border-radius: 7px;
+
+    background: #282828;
+    color: #999;
+
+    font: inherit;
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        color 0.15s ease;
+}
+
+.danger-button:hover {
+    background: #302828;
+    border-color: #604545;
+    color: #d8bebe;
+}
+
+.danger-button:active {
+    background: #282020;
+}
 
 /* =========================
    CONVERSATION
@@ -359,7 +395,7 @@ button {
 
 #question-input {
     flex: 1;
-
+    font-weight: 60;
     min-width: 0;
     height: 42px;
 

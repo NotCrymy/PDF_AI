@@ -4,7 +4,6 @@
 
 const documentList = document.getElementById("document-list");
 
-
 async function loadDocuments() {
 
     console.log("Loading documents...");
@@ -114,6 +113,40 @@ function escapeHtml(text) {
     return element.innerHTML;
 }
 
+const deleteAllButton = document.getElementById("delete-all-documents");
+
+deleteAllButton.addEventListener("click", async () => {
+
+    const confirmed = confirm("Delete all documents?");
+
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+
+        const response = await fetch("/api/documents", {
+            method: "DELETE"
+        });
+
+        if (!response.ok) {
+            throw new Error(`Delete failed: ${response.status}`);
+        }
+
+        clearDocumentList();
+
+    } catch (error) {
+
+        console.error("Error deleting all documents:", error);
+
+    }
+});
+
+function clearDocumentList() {
+
+    documentList.innerHTML = "";
+
+}
 
 // ============================================================
 // Models

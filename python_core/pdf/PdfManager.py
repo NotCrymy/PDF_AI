@@ -56,6 +56,7 @@ class PdfManager:
             output_path (str): The file path where the JSON will be saved.
         """
         json_data = {
+            "name": pdf_document.name,
             "path": pdf_document.path,
             "pages": pdf_document.pages
         }

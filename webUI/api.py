@@ -134,6 +134,24 @@ def delete_document(filename: str):
         "filename": filename
     }
 
+@app.delete("/api/documents")
+def delete_all_documents():
+    global PDF_LIST
+
+    # delete all PDFs + their JSONs
+    PDF_MANAGER.delete_all_documents(
+        PDF_LIST.list,
+        str(PARSED_DOCUMENT_DIRECTORY)
+    )
+
+    # clear the global list
+    PDF_LIST.list.clear()
+
+    return {
+        "success": True,
+        "message": "All documents deleted"
+    }
+
 
 # ============================================================
 # Upload PDFs
