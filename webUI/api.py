@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -24,8 +24,17 @@ PARSED_DOCUMENT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
 
+
+# ============================================================
+# Managers
+# ============================================================
+
 ai = AIManager(MODEL)
 PDF_MANAGER = PdfManager()
+
+# global list containing the currently loaded PDFs
+PDF_LIST = PdfList([])
+
 
 # ============================================================
 # Static files
@@ -84,6 +93,48 @@ def get_documents():
     return documents
 
 
+@app.delete("/api/documents/{filename}")
+def delete_document(filename: str):
+
+    global PDF_LIST
+
+    pdf_path = PDF_DIRECTORY / filename
+
+    if not pdf_path.exists():
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found"
+        )
+
+    # find the corresponding PdfDocument in the global PdfList
+    pdf_document = None
+
+    for document in PDF_LIST.list:
+        if Path(document.path).name == filename:
+            pdf_document = document
+            break
+
+    if pdf_document is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found in PDF list"
+        )
+
+    # delete the PDF + its JSON
+    PDF_MANAGER.delete_document(
+        pdf_document,
+        str(PARSED_DOCUMENT_DIRECTORY)
+    )
+
+    # remove the document from the global list
+    PDF_LIST.list.remove(pdf_document)
+
+    return {
+        "success": True,
+        "filename": filename
+    }
+
+
 # ============================================================
 # Upload PDFs
 # ============================================================
@@ -91,9 +142,11 @@ def get_documents():
 @app.post("/upload")
 async def upload(pdf_files: list[UploadFile] = File(...)):
 
+    global PDF_LIST
+
     pdf_paths = []
 
-    # save uploaded PDF files to the specified directory
+    # Save uploaded PDF files to the specified directory
     for pdf_file in pdf_files:
 
         if not pdf_file.filename:
@@ -112,22 +165,24 @@ async def upload(pdf_files: list[UploadFile] = File(...)):
         }
 
     # create a PdfList instance with the uploaded PDF paths
-    pdf_list = PdfList(pdf_paths)
+    new_pdf_list = PdfList(pdf_paths)
 
-    # parse all PDFs and generate JSON files
-    documents = PDF_MANAGER.parse_all(pdf_list)
+    # parse all PDFs
+    documents = PDF_MANAGER.parse_all(new_pdf_list)
 
-    # clean up document names to only include the file name without the path
+    # clean up document names to only include the file name
     for document in documents:
         document.name = Path(document.name).name
 
-    # save the parsed documents as JSON files in the specified directory
+    # add the parsed documents to the global PDF list
+    PDF_LIST.list.extend(documents)
+
+    # save the parsed documents as JSON files
     PDF_MANAGER.to_json_all(
         documents,
         str(PARSED_DOCUMENT_DIRECTORY)
     )
 
-    # finding the uploaded files that have a filename and returning their names (useful for the frontend to display the uploaded files)
     return {
         "files": [
             pdf_file.filename

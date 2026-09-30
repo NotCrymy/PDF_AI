@@ -53,7 +53,53 @@ function addDocumentToList(doc) {
                 ${escapeHtml(doc.name)}
             </div>
         </div>
+
+        <button
+            class="document-delete"
+            type="button"
+            title="Delete document"
+        >
+            ×
+        </button>
     `;
+
+    const deleteButton = documentElement.querySelector(".document-delete");
+
+    deleteButton.addEventListener("click", async (event) => {
+
+        event.stopPropagation();
+
+        const confirmed = confirm(
+            `Delete "${doc.name}"?`
+        );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            const response = await fetch(
+                `/api/documents/${encodeURIComponent(doc.name)}`,
+                {
+                    method: "DELETE"
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    `Delete failed: ${response.status}`
+                );
+            }
+
+            documentList.removeChild(documentElement);
+
+        } catch (error) {
+
+            console.error("Delete error:", error);
+
+        }
+    });
 
     documentList.appendChild(documentElement);
 }

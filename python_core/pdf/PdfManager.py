@@ -101,12 +101,13 @@ class PdfManager:
         except FileNotFoundError:
             print(f"File {pdf_document.path} not found.")
 
-    def delete_all_documents(self, pdf_documents : list[PdfDocument.PdfDocument]):
+    def delete_all_documents(self, pdf_documents : list[PdfDocument.PdfDocument], output_path : str):
         """
         Deletes all PDF files corresponding to a list of PdfDocument objects.
         
         Args:
             pdf_documents (list): A list of PdfDocument instances whose PDF files will be deleted.
+            output_path (str): The directory path where the JSON files are located.
         """
         for pdf_document in pdf_documents:
-            self.delete_document(pdf_document)
+            self.delete_document(pdf_document, output_path)

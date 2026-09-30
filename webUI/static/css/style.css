@@ -217,6 +217,40 @@ button {
     text-align: center;
 }
 
+.document-delete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    width: 28px;
+    height: 28px;
+
+    margin-left: auto;
+
+    padding: 0;
+
+    border: none;
+    border-radius: 5px;
+
+    background: transparent;
+    color: #777;
+
+    font-size: 18px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease;
+}
+
+.document-delete:hover {
+    background: #3a3a3a;
+    color: #eee;
+}
 
 /* =========================
    BUTTONS
