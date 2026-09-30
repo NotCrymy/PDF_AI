@@ -1,3 +1,5 @@
+import os
+
 import pymupdf
 import json
 
@@ -84,3 +86,27 @@ class PdfManager:
             str: The text content of the specified page.
         """
         return pdf_document.pages[page_number - 1]["text"] if 0 < page_number <= len(pdf_document.pages) else None
+
+    def delete_document(self, pdf_document : PdfDocument.PdfDocument, output_path : str):
+        """
+        Deletes the PDF file corresponding to a PdfDocument.
+        
+        Args:
+            pdf_document (PdfDocument): An instance of PdfDocument whose PDF file will be deleted.
+            output_path (str): The directory path where the JSON file is located.
+        """
+        try:
+            os.remove(pdf_document.path)
+            os.remove(f"./{output_path}/{pdf_document.name}.json")
+        except FileNotFoundError:
+            print(f"File {pdf_document.path} not found.")
+
+    def delete_all_documents(self, pdf_documents : list[PdfDocument.PdfDocument]):
+        """
+        Deletes all PDF files corresponding to a list of PdfDocument objects.
+        
+        Args:
+            pdf_documents (list): A list of PdfDocument instances whose PDF files will be deleted.
+        """
+        for pdf_document in pdf_documents:
+            self.delete_document(pdf_document)

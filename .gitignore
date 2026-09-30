@@ -3,4 +3,8 @@
 /python_core/pdf/__pycache__/*
 /python_core/__pycache__/*
 /python_core/ai/__pycache__/*
+/python_core/parsed_doc/*
+
 /webUI/__pycache__/*
+
+/pdf_files/*

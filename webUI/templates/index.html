@@ -6,120 +6,118 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css">
 
-<title>PDF AI APP</title>
-
+    <title>PDF AI APP</title>
 </head>
 
 <body>
 
-<!-- documents area -->
-<div id="DocumentContainer" class="sidebar">
+    <!-- documents area -->
+    <div id="DocumentContainer" class="sidebar">
 
-    <div class="section-header">
-        <h1>Documents</h1>
-    </div>
-
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
-
-        <input
-            type="file"
-            id="pdf-files"
-            name="pdf_files"
-            accept=".pdf"
-            multiple
-            hidden
-        >
-
-        <label for="pdf-files" class="file-picker">
-            <span class="file-picker-icon">+</span>
-            <span>Select PDFs</span>
-        </label>
-
-    </form>
-
-    <div id="document-list">
-        <!-- will be added dynamically -->
-    </div>
-
-</div>
-
-
-<!-- conversation area -->
-<div id="ConversationContainer">
-
-    <div class="section-header">
-        <h1>Conversation</h1>
-    </div>
-
-    <div id="conversation">
-
-        <div id="response">
-            <p id="response-text"></p>
+        <div class="section-header">
+            <h1>Documents</h1>
         </div>
 
-        <div id="QuestionContainer">
+        <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
 
-            <form id="question-form">
+            <input
+                type="file"
+                id="pdf-files"
+                name="pdf_files"
+                accept=".pdf"
+                multiple
+                hidden
+            >
 
-                <input
-                    type="text"
-                    id="question-input"
-                    placeholder="Ask a question..."
-                    autocomplete="off"
-                    required
-                >
-
-                <button type="submit" class="primary-button">
-                    Send
-                </button>
-
-            </form>
-
-        </div>
-
-    </div>
-
-</div>
-
-
-<!-- settings area  -->
-<div id="SettingsContainer" class="sidebar">
-
-    <div class="section-header">
-        <h1>Settings</h1>
-    </div>
-
-    <form id="settings-form">
-
-        <div class="setting">
-
-            <label for="model">
-                Model
+            <label for="pdf-files" class="file-picker">
+                <span class="file-picker-icon">+</span>
+                <span>Select PDFs</span>
             </label>
 
-            <select id="model" name="model">
-                <option value="lfm2.5-local">
-                    lfm2.5-local
-                </option>
+        </form>
 
-                <option value="other-model">
-                    Other Model
-                </option>
-            </select>
+        <div id="document-list">
+            <!-- will be added dynamically -->
+        </div>
+
+    </div>
+
+
+    <!-- conversation area -->
+    <div id="ConversationContainer">
+
+        <div class="section-header">
+            <h1>Conversation</h1>
+        </div>
+
+        <div id="conversation">
+
+            <div id="response">
+                <p id="response-text"></p>
+            </div>
+
+            <div id="QuestionContainer">
+
+                <form id="question-form">
+
+                    <input
+                        type="text"
+                        id="question-input"
+                        placeholder="Ask a question..."
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit" class="primary-button">
+                        Send
+                    </button>
+
+                </form>
+
+            </div>
 
         </div>
 
-        <button type="submit" class="primary-button">
-            Save Settings
-        </button>
-
-    </form>
-
-</div>
+    </div>
 
 
-<script src="/static/js/script.js"></script>
+    <!-- settings area  -->
+    <div id="SettingsContainer" class="sidebar">
+
+        <div class="section-header">
+            <h1>Settings</h1>
+        </div>
+
+        <form id="settings-form">
+
+            <div class="setting">
+
+                <label for="model">
+                    Model
+                </label>
+
+                <select id="model" name="model">
+                    <option value="lfm2.5-local">
+                        lfm2.5-local
+                    </option>
+
+                    <option value="other-model">
+                        Other Model
+                    </option>
+                </select>
+
+            </div>
+
+            <button type="submit" class="primary-button">
+                Save Settings
+            </button>
+
+        </form>
+
+    </div>
+
+    <script src="/static/js/script.js"></script>
 </body>
 </html>
