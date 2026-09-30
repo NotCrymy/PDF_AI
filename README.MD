@@ -228,15 +228,7 @@ python_core/parsed_doc/
 
 ## Asking questions
 
-Enter a question in the Conversation panel and click `Send`.
-
-The frontend sends the question to:
-
-```text
-POST /api/chat
-```
-
-FastAPI passes the question to `AIManager`, which sends the document context and question to the configured Ollama model.
+Enter a question in the Conversation panel and click `Send` or enter.
 
 # Project status
 
