@@ -163,6 +163,8 @@ lfm2.5-local
 
 The model is created locally from the provided `Modelfile`.
 
+To help you through the installation you can also run the python script "model_installer.py"
+
 From the project root:
 
 ```bash
