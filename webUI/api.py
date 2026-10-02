@@ -8,6 +8,7 @@ from pydantic import BaseModel
 from python_core.ai.AIManager import AIManager
 from python_core.pdf.PdfList import PdfList
 from python_core.pdf.PdfManager import PdfManager
+from python_core.ai.ConversationManager import ConversationManager
 
 
 # ============================================================
@@ -35,6 +36,9 @@ PDF_MANAGER = PdfManager()
 # global list containing the currently loaded PDFs
 PDF_LIST = PdfList([])
 
+
+CONVERSATION_MANAGER = ConversationManager()
+CURRENT_CONVERSATION = CONVERSATION_MANAGER.create_conversation()
 
 # ============================================================
 # Static files
@@ -67,12 +71,31 @@ class ChatRequest(BaseModel):
 @app.post("/api/chat")
 def chat(request: ChatRequest):
 
+    CONVERSATION_MANAGER.add_question(
+        CURRENT_CONVERSATION,
+        request.question
+    )
+
     response = ai.ask(request.question)
 
+    CONVERSATION_MANAGER.add_answer(
+        CURRENT_CONVERSATION,
+        response
+    )
+
     return {
-        "response": response
+        "question": request.question,
+        "answer": response
     }
 
+@app.get("/api/conversation")
+def get_conversation():
+
+    return {
+        "conversation_id": CURRENT_CONVERSATION.conversation_id,
+        "questions": CURRENT_CONVERSATION.questions,
+        "answers": CURRENT_CONVERSATION.answers
+    }
 
 # ============================================================
 # Documents

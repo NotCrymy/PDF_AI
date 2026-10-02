@@ -345,6 +345,43 @@ button {
     min-height: 0;
 }
 
+#conversation-messages {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.message {
+    max-width: 85%;
+}
+
+.message.user {
+    align-self: flex-end;
+}
+
+.message.assistant {
+    align-self: flex-start;
+}
+
+.message-role {
+    margin-bottom: 5px;
+    color: #777;
+    font-size: 11px;
+}
+
+.message-content {
+    padding: 10px 13px;
+    border-radius: 8px;
+    background: #282828;
+    color: #ddd;
+    line-height: 1.5;
+    white-space: pre-wrap;
+}
+
+.message.user .message-content {
+    background: #303030;
+}
+
 
 /* =========================
    RESPONSE

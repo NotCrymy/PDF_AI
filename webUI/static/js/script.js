@@ -291,37 +291,44 @@ fileInput.addEventListener("change", async () => {
 // ============================================================
 
 const questionForm = document.getElementById("question-form");
-
 const questionInput = document.getElementById("question-input");
 
-const responseText = document.getElementById("response-text");
-
+// must be a DOM element, not a <p> tag, to allow appending messages
+const conversationMessages = document.getElementById("conversation-messages");
 
 questionForm.addEventListener("submit", async (event) => {
 
     event.preventDefault();
 
-    const question = questionInput.value;
+    console.log("QUESTION FORM SUBMITTED");
 
-    if (!question.trim()) {
+    const question = questionInput.value.trim();
+
+    console.log("Question:", question);
+
+    if (!question) {
         return;
     }
 
+    addMessage("user", question);
+
+    questionInput.value = "";
+
     try {
 
+        console.log("Sending request to /api/chat...");
+
         const response = await fetch("/api/chat", {
-
             method: "POST",
-
             headers: {
                 "Content-Type": "application/json"
             },
-
             body: JSON.stringify({
                 question: question
             })
-
         });
+
+        console.log("API response status:", response.status);
 
         if (!response.ok) {
             throw new Error(`Chat request failed: ${response.status}`);
@@ -329,16 +336,87 @@ questionForm.addEventListener("submit", async (event) => {
 
         const data = await response.json();
 
-        responseText.textContent = data.response;
+        console.log("API response:", data);
+
+        addMessage("assistant", data.answer);
 
     } catch (error) {
 
         console.error("Chat error:", error);
 
-        responseText.textContent = "An error occurred.";
-
+        addMessage(
+            "assistant",
+            "An error occurred while contacting the AI."
+        );
     }
 });
+
+function addMessage(role, content) {
+
+    const messageElement = document.createElement("div");
+
+    messageElement.className = `message ${role}`;
+
+    messageElement.innerHTML = `
+        <div class="message-role">
+            ${role === "user" ? "You" : "AI"}
+        </div>
+
+        <div class="message-content">
+            ${escapeHtml(content)}
+        </div>
+    `;
+
+    conversationMessages.appendChild(messageElement);
+
+    conversationMessages.scrollTop =
+        conversationMessages.scrollHeight;
+}
+
+async function loadConversation() {
+
+    try {
+
+        const response = await fetch("/api/conversation");
+
+        if (!response.ok) {
+            throw new Error("Failed to load conversation");
+        }
+
+        const conversation = await response.json();
+
+        conversationMessages.innerHTML = "";
+
+        const count = Math.max(
+            conversation.questions.length,
+            conversation.answers.length
+        );
+
+        for (let i = 0; i < count; i++) {
+
+            if (conversation.questions[i]) {
+                addMessage(
+                    "user",
+                    conversation.questions[i]
+                );
+            }
+
+            if (conversation.answers[i]) {
+                addMessage(
+                    "assistant",
+                    conversation.answers[i]
+                );
+            }
+        }
+
+    } catch (error) {
+
+        console.error(
+            "Error loading conversation:",
+            error
+        );
+    }
+}
 
 
 // ============================================================
@@ -348,3 +426,5 @@ questionForm.addEventListener("submit", async (event) => {
 loadDocuments();
 
 loadModels();
+
+loadConversation();
