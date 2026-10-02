@@ -154,6 +154,8 @@ pip install -r requirements.txt
 
 Install Ollama for your operating system and make sure the Ollama service is running.
 
+You can download it here : *https://ollama.com/download*
+
 The application currently expects the following model :
 
 ```text
@@ -163,7 +165,7 @@ lfm2.5-local
 
 The model is created locally from the provided `Modelfile`.
 
-To help you through the installation you can also run the python script "model_installer.py"
+To help you through the installation you can also just run the python script *model_installer.py*
 
 From the project root:
 
@@ -231,6 +233,8 @@ python_core/parsed_doc/
 ## Asking questions
 
 Enter a question in the Conversation panel and click `Send` or enter.
+
+The first anserw may be long because the system is setting up.
 
 # Project status
 

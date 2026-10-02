@@ -8,3 +8,5 @@
 /webUI/__pycache__/*
 
 /pdf_files/*
+
+/.venv/*
