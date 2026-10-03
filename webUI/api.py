@@ -25,6 +25,29 @@ PARSED_DOCUMENT_DIRECTORY.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI()
 
+# ============================================================
+# Startup cleanup
+# ============================================================
+
+def clear_document_cache():
+    """
+    Clears all PDF and parsed JSON files from the previous
+    application session.
+    """
+
+    PDF_DIRECTORY.mkdir(parents=True, exist_ok=True)
+    PARSED_DOCUMENT_DIRECTORY.mkdir(parents=True, exist_ok=True)
+
+    for pdf_file in PDF_DIRECTORY.glob("*.pdf"):
+        pdf_file.unlink()
+
+    for json_file in PARSED_DOCUMENT_DIRECTORY.glob("*.json"):
+        json_file.unlink()
+
+
+# Clear the previous session's document cache.
+clear_document_cache()
+
 
 # ============================================================
 # Managers
