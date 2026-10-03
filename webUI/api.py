@@ -92,23 +92,30 @@ class ChatRequest(BaseModel):
 
 
 @app.post("/api/chat")
-def chat(request: ChatRequest):
+def chat_endpoint(request: ChatRequest):
+
+    previous_messages = CONVERSATION_MANAGER.get_messages(
+        CURRENT_CONVERSATION
+    )
+
+    answer = ai.ask(
+        request.question,
+        previous_messages
+    )
 
     CONVERSATION_MANAGER.add_question(
         CURRENT_CONVERSATION,
         request.question
     )
 
-    response = ai.ask(request.question)
-
     CONVERSATION_MANAGER.add_answer(
         CURRENT_CONVERSATION,
-        response
+        answer
     )
 
     return {
         "question": request.question,
-        "answer": response
+        "answer": answer
     }
 
 @app.get("/api/conversation")

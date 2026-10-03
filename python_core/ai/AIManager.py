@@ -1,5 +1,3 @@
-from urllib import response
-
 from ollama import chat
 from .DocumentLoader import DocumentLoader
 
@@ -10,7 +8,24 @@ class AIManager:
         self,
         model: str = "lfm2.5-local",
         document_context_path: str = "./python_core/parsed_doc/",
-        all_models: list[str] | None = None
+        all_models: list[str] | None = None,
+        initial_prompt: str = """
+            Tu es un assistant spécialisé dans l'analyse de documents.
+
+            Tu disposes d'un ensemble de documents PDF fournis par l'utilisateur.
+
+            RÈGLES :
+
+            - Cherche d'abord les informations pertinentes dans les documents.
+            - Tu peux reformuler et synthétiser les informations trouvées.
+            - Si plusieurs passages permettent de répondre à la question, combine-les.
+            - Si la question demande une synthèse, produis une synthèse claire.
+            - Si la question demande une explication, explique naturellement les informations présentes.
+            - Ne refuse pas de répondre simplement parce que la formulation exacte n'apparaît pas dans les documents.
+            - Si les documents ne permettent réellement pas de répondre, indique que l'information n'est pas disponible.
+            - Lorsque tu utilises une information provenant d'un document, indique sa source sous la forme :
+            [Nom du document, page X]
+        """
     ):
         self.current_model = model
         self.all_models = all_models if all_models is not None else []
@@ -21,6 +36,8 @@ class AIManager:
         self.document_loader = DocumentLoader(document_context_path)
         self.documents = self.document_loader.load_all()
 
+        self.initial_prompt = initial_prompt
+
     def set_model(self, model: str):
         self.current_model = model
 
@@ -29,6 +46,12 @@ class AIManager:
             self.all_models.append(model)
 
     def build_context(self) -> str:
+        """
+        Build a context string from the loaded documents.
+        
+        Returns:
+            str: A string containing the context from all documents.
+        """
         self.documents = self.document_loader.load_all()
 
         context = ""
@@ -40,58 +63,40 @@ class AIManager:
                 context += (
                     f"\n[SOURCE: {document['name']} | PAGE: {page['page']}]\n"
                 )
+
                 context += page["text"]
                 context += "\n"
 
         return context
 
-    def ask(self, question: str) -> str:
-
+    def ask(self, question: str, conversation_messages: list[dict[str, str]]) -> str:
         context = self.build_context()
 
-        prompt = f"""
-            Tu es un assistant spécialisé dans l'analyse de documents.
+        messages = [
+            {
+                "role": "system",
+                "content": self.initial_prompt
+            },
 
-            Tu disposes d'un ensemble de documents PDF fournis par l'utilisateur.
-            Ta tâche est de répondre aux questions en utilisant principalement ces documents.
+            *conversation_messages, # indluding all previous conversation messages here by unpacking the list
 
-            RÈGLES :
+            {
+                "role": "user",
+                "content": f"""
+                DOCUMENTS :
 
-            - Cherche d'abord les informations pertinentes dans les documents.
-            - Tu peux reformuler et synthétiser les informations trouvées.
-            - Tu n'as pas besoin que la réponse soit écrite exactement avec les mêmes mots
-            que dans le document.
-            - Si plusieurs passages permettent de répondre à la question, combine-les.
-            - Si la question demande une synthèse, produis une synthèse claire.
-            - Si la question demande une explication, explique les informations présentes
-            dans les documents de manière naturelle.
-            - Ne refuse pas de répondre simplement parce que la formulation exacte de la
-            question n'apparaît pas dans les documents.
-            - Si les documents ne permettent réellement pas de répondre à la question,
-            indique clairement que l'information n'est pas disponible.
-            - Lorsque tu utilises une information provenant d'un document, indique sa
-            source sous la forme :
-            [Nom du document, page X]
+                {context}
 
-            DOCUMENTS :
+                QUESTION :
 
-            {context}
-
-            QUESTION :
-
-            {question}
-
-            RÉPONSE :
-            """
+                {question}
+                """
+            }
+        ]
 
         response = chat(
             model=self.current_model,
-            messages=[
-                {
-                    "role": "user",
-                    "content": prompt
-                }
-            ]
+            messages=messages
         )
 
         return response.message.content
